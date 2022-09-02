@@ -13,7 +13,9 @@
     </style>
   </head>
   <body>
-    <h1>Campgrounds</h1>
+    <h1 id="top">Campgrounds</h1>
+    <a href="http://localhost:3000/campgrounds/new">Add New Campground</a>
+    <br /><br />
     <ul>
       <% for( let i = 0; i < campgrounds.length; i++ ) { %>
       <li>
@@ -35,6 +37,7 @@
       </li>
       <% } %>
     </ul>
-    <a href="http://localhost:3000/campgrounds/new">Add New Campground</a>
+
+    <a href="#top">Top of Page</a>
   </body>
 </html>

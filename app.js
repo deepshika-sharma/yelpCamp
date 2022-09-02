@@ -41,6 +41,7 @@ app.get("/campgrounds/new", (req, res) => {
 
 app.post("/campgrounds", async (req, res) => {
   console.log(req.body);
+  // we can also save()
   await Campground.insertMany(req.body);
   res.redirect("/campgrounds");
 });
