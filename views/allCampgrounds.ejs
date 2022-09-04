@@ -1,43 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Campgrounds</title>
-    <style>
-      .titles {
-        text-decoration: none;
-        color: purple;
-      }
-    </style>
-  </head>
-  <body>
-    <h1 id="top">Campgrounds</h1>
-    <a href="http://localhost:3000/campgrounds/new">Add New Campground</a>
-    <br /><br />
-    <ul>
-      <% for( let i = 0; i < campgrounds.length; i++ ) { %>
-      <li>
-        <a
-          class="titles"
-          href="http://localhost:3000/campgrounds/<%= campgrounds[i].id %>"
-          ><%= campgrounds[i].title %></a
-        >
-        <a
-          href="http://localhost:3000/campgrounds/<%= campgrounds[i].id %>/edit"
-          >Edit</a
-        >
-        <form
-          action="/campgrounds/<%= campgrounds[i].id%>?_method=DELETE"
-          method="post"
-        >
-          <button>Delete</button>
-        </form>
-      </li>
-      <% } %>
-    </ul>
+<% layout('layouts/boilerplate') %>
+<h1 id="top">Campgrounds</h1>
+<a href="http://localhost:3000/campgrounds/new">Add New Campground</a>
+<br /><br />
+<ul>
+  <% for( let i = 0; i < campgrounds.length; i++ ) { %>
+  <li>
+    <a
+      class="titles"
+      href="http://localhost:3000/campgrounds/<%= campgrounds[i].id %>"
+      ><%= campgrounds[i].title %></a
+    >
+    <a href="http://localhost:3000/campgrounds/<%= campgrounds[i].id %>/edit"
+      >Edit</a
+    >
+    <form
+      action="/campgrounds/<%= campgrounds[i].id%>?_method=DELETE"
+      method="post"
+    >
+      <button>Delete</button>
+    </form>
+  </li>
+  <% } %>
+</ul>
 
-    <a href="#top">Top of Page</a>
-  </body>
-</html>
+<a href="#top">Top of Page</a>

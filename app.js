@@ -5,6 +5,12 @@ const path = require("path");
 const methodOverride = require("method-override");
 const Campground = require("./models/campground");
 
+// EJS-MATE
+const ejsMate = require("ejs-mate");
+
+// use ejs-locals for all ejs templates:
+app.engine("ejs", ejsMate);
+
 // MONGOOSE
 const mongoose = require("mongoose");
 mongoose
