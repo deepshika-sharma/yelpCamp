@@ -6,7 +6,9 @@
 <small><%= campground.location %> </small>
 <br />
 <a href="http://localhost:3000/campgrounds">All Campgrounds</a>
-<a href="#">Edit Campground</a>
+<a href="http://localhost:3000/campgrounds/<%= campground.id %>/edit"
+  >Edit Campground</a
+>
 <br />
 <br />
 <form action="/campgrounds/<%= campground.id %>?_method=DELETE" method="post">
