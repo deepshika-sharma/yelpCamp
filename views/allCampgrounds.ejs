@@ -2,16 +2,28 @@
 <h1 id="top">Campgrounds</h1>
 <a href="http://localhost:3000/campgrounds/new">Add New Campground</a>
 <br /><br />
-<ul>
-  <% for( let i = 0; i < campgrounds.length; i++ ) { %>
-  <li>
-    <a
-      class="titles"
-      href="http://localhost:3000/campgrounds/<%= campgrounds[i].id %>"
-      ><%= campgrounds[i].title %></a
-    >
-  </li>
-  <% } %>
-</ul>
+
+<% for( let campground of campgrounds) { %>
+<div class="card mb-3">
+  <div class="row">
+    <div class="col-md-4">
+      <img class="img-fluid" src="<%= campground.image %>" alt="" />
+    </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        <h5 class="card-title"><%= campground.title %></h5>
+        <p class="card-text"><%= campground.description %></p>
+        <small class="card-text text-muted"><%= campground.location %></small>
+        <br /><br />
+        <a
+          class="btn btn-warning"
+          href="http://localhost:3000/campgrounds/<%= campground.id %>"
+          >More</a
+        >
+      </div>
+    </div>
+  </div>
+</div>
+<% } %>
 
 <a href="#top">Top of Page</a>
