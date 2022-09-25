@@ -46,9 +46,9 @@ app.get("/campgrounds/new", (req, res) => {
 });
 
 app.post("/campgrounds", async (req, res) => {
-  // console.log(req.body);
+  // console.log("newwwie", req.body);
   // we can also save()
-  await Campground.insertMany(req.body);
+  const campground = await Campground.insertMany([req.body]);
   res.redirect("/campgrounds");
 });
 
@@ -68,14 +68,14 @@ app.get("/campgrounds/:id/edit", async (req, res) => {
 
 app.patch("/campgrounds/:id", async (req, res) => {
   const { id } = req.params;
-  await Campground.findByIdAndUpdate(id, req.body);
+  const campground = await Campground.findByIdAndUpdate(id, req.body);
   res.redirect(`/campgrounds/${id}`);
 });
 
 // DELETE A CAMPGROUND
 app.delete("/campgrounds/:id", async (req, res) => {
   const { id } = req.params;
-  await Campground.findByIdAndDelete(id);
+  const campground = await Campground.findByIdAndDelete(id);
   res.redirect("/campgrounds");
 });
 
