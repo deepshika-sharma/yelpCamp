@@ -90,6 +90,6 @@ app.delete("/campgrounds/:id", async (req, res) => {
 //   res.send(camp);
 // });
 
-app.listen(4000, () => {
+app.listen(3000, () => {
   console.log("LISTENING ON PORT 3000!");
 });

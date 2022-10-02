@@ -7,6 +7,8 @@
     <form
       action="/campgrounds/<%= campground.id %>?_method=PATCH"
       method="post"
+      class="needs-validation"
+      novalidate
     >
       <div class="mb-3">
         <label class="form-label" for="title">Title</label>
@@ -16,7 +18,10 @@
           name="title"
           id="title"
           value="<%= campground.title %>"
+          required
         />
+        <div class="valid-feedback">Looks good!</div>
+        <div class="invalid-feedback">Please enter a campground title!</div>
       </div>
 
       <!-- PRICE -->
@@ -29,8 +34,12 @@
             class="form-control text-muted"
             value="<%= campground.price %>"
             aria-label="Amount (to the nearest dollar)"
+            input
           />
+
           <span class="input-group-text">.00</span>
+          <div class="valid-feedback">Looks good!</div>
+          <div class="invalid-feedback">Please enter a campground price!</div>
         </div>
       </div>
 
@@ -53,7 +62,10 @@
           name="location"
           id="location"
           value="<%= campground.location %>"
+          required
         />
+        <div class="valid-feedback">Looks good!</div>
+        <div class="invalid-feedback">Please enter a campground location!</div>
       </div>
       <div class="mb-3">
         <label class="form-label" for="image">Image Link</label>
@@ -63,7 +75,12 @@
           name="image"
           id="image"
           value="<%= campground.image %>"
+          required
         />
+        <div class="valid-feedback">Looks good!</div>
+        <div class="invalid-feedback">
+          Please enter a campground image link!
+        </div>
       </div>
       <div class="mb-3">
         <label class="form-label" for="description">Description</label>
@@ -72,9 +89,14 @@
           type="text"
           name="description"
           id="description"
+          required
         >
 <%= campground.description %> </textarea
         >
+        <div class="valid-feedback">Looks good!</div>
+        <div class="invalid-feedback">
+          Please enter a campground description!
+        </div>
       </div>
       <button class="btn btn-warning">Submit</button>
     </form>
