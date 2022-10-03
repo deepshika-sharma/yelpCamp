@@ -5,6 +5,10 @@ const path = require("path");
 const methodOverride = require("method-override");
 const Campground = require("./models/campground");
 
+// ERRORS
+const ExpressError = require("./utils/ExpressError");
+const wrapAsync = require("./utils/wrapAsync");
+
 // EJS-MATE
 const ejsMate = require("ejs-mate");
 
@@ -35,49 +39,67 @@ app.get("/", (req, res) => {
   res.redirect("/campgrounds");
 });
 
-app.get("/campgrounds", async (req, res) => {
-  const campgrounds = await Campground.find({});
-  res.render("allCampgrounds", { campgrounds });
-});
+app.get(
+  "/campgrounds",
+  wrapAsync(async (req, res) => {
+    const campgrounds = await Campground.find({});
+    res.render("allCampgrounds", { campgrounds });
+  })
+);
 
 // ADDING A NEW CAMPGROUND
 app.get("/campgrounds/new", (req, res) => {
   res.render("newCampground");
 });
 
-app.post("/campgrounds", async (req, res) => {
-  // console.log("newwwie", req.body);
-  // we can also save()
-  const campground = await Campground.insertMany([req.body]);
-  res.redirect("/campgrounds");
-});
+app.post(
+  "/campgrounds",
+  wrapAsync(async (req, res) => {
+    // console.log("newwwie", req.body);
+    // we can also save()
+    const campground = await Campground.insertMany([req.body]);
+    res.redirect("/campgrounds");
+  })
+);
 
 // VIEWING A CAMPGROUND
-app.get("/campgrounds/:id", async (req, res) => {
-  const { id } = req.params;
-  const campground = await Campground.findById(id);
-  res.render("campground", { campground });
-});
+app.get(
+  "/campgrounds/:id",
+  wrapAsync(async (req, res) => {
+    const { id } = req.params;
+    const campground = await Campground.findById(id);
+    res.render("campground", { campground });
+  })
+);
 
 // EDIT A CAMPGROUND
-app.get("/campgrounds/:id/edit", async (req, res) => {
-  const { id } = req.params;
-  const campground = await Campground.findById(id);
-  res.render("edit", { campground });
-});
+app.get(
+  "/campgrounds/:id/edit",
+  wrapAsync(async (req, res) => {
+    const { id } = req.params;
+    const campground = await Campground.findById(id);
+    res.render("edit", { campground });
+  })
+);
 
-app.patch("/campgrounds/:id", async (req, res) => {
-  const { id } = req.params;
-  const campground = await Campground.findByIdAndUpdate(id, req.body);
-  res.redirect(`/campgrounds/${id}`);
-});
+app.patch(
+  "/campgrounds/:id",
+  wrapAsync(async (req, res) => {
+    const { id } = req.params;
+    const campground = await Campground.findByIdAndUpdate(id, req.body);
+    res.redirect(`/campgrounds/${id}`);
+  })
+);
 
 // DELETE A CAMPGROUND
-app.delete("/campgrounds/:id", async (req, res) => {
-  const { id } = req.params;
-  const campground = await Campground.findByIdAndDelete(id);
-  res.redirect("/campgrounds");
-});
+app.delete(
+  "/campgrounds/:id",
+  wrapAsync(async (req, res) => {
+    const { id } = req.params;
+    const campground = await Campground.findByIdAndDelete(id);
+    res.redirect("/campgrounds");
+  })
+);
 
 // app.get("/makecampground", async (req, res) => {
 //   const camp = new Campground({
@@ -89,6 +111,16 @@ app.delete("/campgrounds/:id", async (req, res) => {
 //   await camp.save();
 //   res.send(camp);
 // });
+
+app.all("*", (req, res, next) => {
+  next(new ExpressError(404, "Something went wrong!!"));
+});
+
+app.use((err, req, res, next) => {
+  const { statusCode, message } = err;
+  res.status(statusCode).send(message);
+  // res.send("OH BOY SOMETHING WENT WRONG!");
+});
 
 app.listen(3000, () => {
   console.log("LISTENING ON PORT 3000!");
