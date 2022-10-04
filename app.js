@@ -5,6 +5,9 @@ const path = require("path");
 const methodOverride = require("method-override");
 const Campground = require("./models/campground");
 
+// JOI -> Schema Validation
+const Joi = require("joi");
+
 // ERRORS
 const ExpressError = require("./utils/ExpressError");
 const wrapAsync = require("./utils/wrapAsync");
@@ -57,7 +60,23 @@ app.post(
   wrapAsync(async (req, res) => {
     // console.log("newwwie", req.body);
     // we can also save()
-    const campground = await Campground.insertMany([req.body]);
+    // if (!req.body) throw new ExpressError(400, "Invalid Campground Data!");
+
+    // the joi validation happens before the mongoose validation
+    const campgroundSchema = Joi.object({
+      title: Joi.string().required(),
+      location: Joi.string().required(),
+      image: Joi.string().required(),
+      price: Joi.number().required().min(0),
+      description: Joi.string().required(),
+    });
+    const { error } = campgroundSchema.validate(req.body);
+    if (error) {
+      const msg = error.details.map((el) => el.message).join(",");
+      throw new ExpressError(404, msg);
+    }
+    console.log(result.error);
+    // const campground = await Campground.insertMany([req.body]);
     res.redirect("/campgrounds");
   })
 );
@@ -113,12 +132,13 @@ app.delete(
 // });
 
 app.all("*", (req, res, next) => {
-  next(new ExpressError(404, "Something went wrong!!"));
+  next(new ExpressError(404, "Page not found!"));
 });
 
 app.use((err, req, res, next) => {
-  const { statusCode, message } = err;
-  res.status(statusCode).send(message);
+  const { statusCode = 500 } = err;
+  if (!err.message) err.message = "Something went wrong!";
+  res.status(statusCode).render("error", { err });
   // res.send("OH BOY SOMETHING WENT WRONG!");
 });
 
