@@ -3,10 +3,29 @@ const express = require("express");
 const app = express();
 const path = require("path");
 const methodOverride = require("method-override");
+
+// Models
 const Campground = require("./models/campground");
+const Review = require("./models/review");
 
 // JOI -> Schema Validation
 const Joi = require("joi");
+
+// Schemas
+const { campgroundSchema } = require("./schemas");
+
+// SCHEMA VALIDATION MIDDLEWARE
+const validateCampground = (req, res, next) => {
+  // the joi validation happens before the mongoose validation
+
+  const { error } = campgroundSchema.validate(req.body);
+  if (error) {
+    const msg = error.details.map((el) => el.message).join(",");
+    throw new ExpressError(404, msg);
+  } else {
+    next();
+  }
+};
 
 // ERRORS
 const ExpressError = require("./utils/ExpressError");
@@ -57,25 +76,12 @@ app.get("/campgrounds/new", (req, res) => {
 
 app.post(
   "/campgrounds",
+  validateCampground,
   wrapAsync(async (req, res) => {
     // console.log("newwwie", req.body);
     // we can also save()
     // if (!req.body) throw new ExpressError(400, "Invalid Campground Data!");
 
-    // the joi validation happens before the mongoose validation
-    const campgroundSchema = Joi.object({
-      title: Joi.string().required(),
-      location: Joi.string().required(),
-      image: Joi.string().required(),
-      price: Joi.number().required().min(0),
-      description: Joi.string().required(),
-    });
-    const { error } = campgroundSchema.validate(req.body);
-    if (error) {
-      const msg = error.details.map((el) => el.message).join(",");
-      throw new ExpressError(404, msg);
-    }
-    console.log(result.error);
     // const campground = await Campground.insertMany([req.body]);
     res.redirect("/campgrounds");
   })
@@ -103,6 +109,7 @@ app.get(
 
 app.patch(
   "/campgrounds/:id",
+  validateCampground,
   wrapAsync(async (req, res) => {
     const { id } = req.params;
     const campground = await Campground.findByIdAndUpdate(id, req.body);
