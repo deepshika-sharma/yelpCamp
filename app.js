@@ -12,13 +12,23 @@ const Review = require("./models/review");
 const Joi = require("joi");
 
 // Schemas
-const { campgroundSchema } = require("./schemas");
+const { campgroundSchema, reviewSchema } = require("./schemas");
 
 // SCHEMA VALIDATION MIDDLEWARE
 const validateCampground = (req, res, next) => {
   // the joi validation happens before the mongoose validation
 
   const { error } = campgroundSchema.validate(req.body);
+  if (error) {
+    const msg = error.details.map((el) => el.message).join(",");
+    throw new ExpressError(404, msg);
+  } else {
+    next();
+  }
+};
+
+const validateReview = (req, res, next) => {
+  const { error } = reviewSchema.validate(req.body);
   if (error) {
     const msg = error.details.map((el) => el.message).join(",");
     throw new ExpressError(404, msg);
@@ -141,6 +151,7 @@ app.delete(
 // ADDING REVIEWS
 app.post(
   "/campgrounds/:id/reviews",
+  validateReview,
   wrapAsync(async (req, res) => {
     const campground = await Campground.findById(req.params.id);
     const review = new Review(req.body);

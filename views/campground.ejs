@@ -38,7 +38,8 @@
     <form
       action="http://localhost:3000/campgrounds/<%= campground.id %>/reviews"
       method="post"
-      class="mb-3"
+      class="mb-3 needs-validation"
+      novalidate
     >
       <div class="mb-3">
         <label for="rating" class="form-label">Rating</label>
@@ -51,6 +52,7 @@
           max="5"
         />
       </div>
+
       <div class="mb-3">
         <label class="form-label" for="body">Review</label>
         <textarea
@@ -59,27 +61,12 @@
           id="body"
           cols="30"
           rows="3"
+          required
         ></textarea>
-        <!-- <input type="range" name="review" id="review" min="0" max="5" /> -->
+        <div class="valid-feedback">Looks good!</div>
+        <div class="invalid-feedback">Please enter a Review!</div>
       </div>
       <button class="btn btn-warning">Submit Review</button>
     </form>
   </div>
 </div>
-
-<!-- <h1><%= campground.title %></h1>
-<h2><%= campground.location %></h2>
-<img src="<%= campground.image %>" alt="" />
-<p><%= campground.description %></p>
-<h3>$<%= campground.price %></h3>
-
-<br />
-<a href="http://localhost:3000/campgrounds">All Campgrounds</a>
-<a href="http://localhost:3000/campgrounds/<%= campground.id %>/edit"
-  >Edit Campground</a
->
-<br />
-<br />
-<form action="/campgrounds/<%= campground.id %>?_method=DELETE" method="post">
-  <button>Delete Campground</button>
-</form> -->
