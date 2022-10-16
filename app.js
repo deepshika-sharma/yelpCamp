@@ -138,6 +138,19 @@ app.delete(
 //   res.send(camp);
 // });
 
+// ADDING REVIEWS
+app.post(
+  "/campgrounds/:id/reviews",
+  wrapAsync(async (req, res) => {
+    const campground = await Campground.findById(req.params.id);
+    const review = new Review(req.body);
+    campground.reviews.push(review);
+    await review.save();
+    await campground.save();
+    res.redirect(`/campgrounds/${req.params.id}`);
+  })
+);
+
 app.all("*", (req, res, next) => {
   next(new ExpressError(404, "Page not found!"));
 });
