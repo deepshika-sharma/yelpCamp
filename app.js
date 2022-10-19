@@ -134,6 +134,7 @@ app.delete(
   wrapAsync(async (req, res) => {
     const { id } = req.params;
     const campground = await Campground.findByIdAndDelete(id);
+
     res.redirect("/campgrounds");
   })
 );
