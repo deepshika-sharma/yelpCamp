@@ -164,6 +164,19 @@ app.post(
   })
 );
 
+// DELETING A REVIEW
+app.delete(
+  "/campgrounds/:id/reviews/:reviewId",
+  wrapAsync(async (req, res) => {
+    const { id, reviewId } = req.params;
+    const campground = await Campground.findByIdAndUpdate(id, {
+      $pull: { reviews: reviewId },
+    });
+    const review = await Review.findByIdAndDelete(reviewId);
+    res.redirect(`/campgrounds/${id}`);
+  })
+);
+
 app.all("*", (req, res, next) => {
   next(new ExpressError(404, "Page not found!"));
 });
