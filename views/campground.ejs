@@ -12,13 +12,8 @@
       </div>
       <ul class="list-group list-group-flush">
         <li class="list-group-item">$<%= campground.price %>/night</li>
-        <!-- <li class="list-group-item">A second item</li>
-        <li class="list-group-item">A third item</li> -->
       </ul>
       <div class="card-body">
-        <!-- <a class="card-link" href="http://localhost:3000/campgrounds"
-          >All Campgrounds</a
-        > -->
         <a
           class="card-link btn btn-warning"
           href="http://localhost:3000/campgrounds/<%= campground.id %>/edit"
@@ -68,5 +63,11 @@
       </div>
       <button class="btn btn-warning">Submit Review</button>
     </form>
+    <div class="mb-3">
+      <% for( let review of campground.reviews) { %>
+      <p>Rating: <%= review.rating %></p>
+      <p>Review: <%= review.body %></p>
+      <% } %>
+    </div>
   </div>
 </div>
